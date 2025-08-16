@@ -1,9 +1,10 @@
-function getSpreadsheetTodayAtNoon() {
-    const timeZone = SpreadsheetApp.getActive().getSpreadsheetTimeZone();
-    const now = new Date();
-    const dateString = Utilities.formatDate(now, timeZone, "yyyy-MM-dd");
-    return new Date(`${dateString}T12:00:00`);
-  }
+function getCurrentMonthName() {
+  const timeZone = SpreadsheetApp.getActive().getSpreadsheetTimeZone();
+  const now = new Date();
+  const monthName = Utilities.formatDate(now, timeZone, "MMMM");
+  const year = Utilities.formatDate(now, timeZone, "yyyy");
+  return `${monthName} ${year}`;
+}
   
   function createMonthlySheet() {
     /**
@@ -25,12 +26,10 @@ function getSpreadsheetTodayAtNoon() {
     ];
 
     // Get current month and year
-    const today = getSpreadsheetTodayAtNoon();
-    const monthName = today.toLocaleString('default', { month: 'long' });
-    const year = today.getFullYear();
-    const currentMonthName = `${monthName} ${year}`;
-
+  const currentMonthName = getCurrentMonthName();
+    
     // Get past month and current year
+    const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
     const pastMonth = yesterday.toLocaleString('default', { month: 'long' });
